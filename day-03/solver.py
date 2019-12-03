@@ -22,7 +22,8 @@ def get_all_coords_of_wire(path):
         for _ in range(magnitude):
             current_pos[idx] += step
             counter += 1
-            coords[tuple(current_pos)] = counter
+            if tuple(current_pos) not in coords:
+                coords[tuple(current_pos)] = counter
     return coords
 
 wire_1_coords = get_all_coords_of_wire(wire_1)
