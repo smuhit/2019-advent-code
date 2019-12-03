@@ -1,4 +1,3 @@
-from collections import OrderedDict
 
 wire_paths = open('input').read().split()
 wire_1 = wire_paths[0].split(',')
@@ -7,34 +6,23 @@ wire_2 = wire_paths[1].split(',')
 def get_all_coords_of_wire(path):
 	# Originally coords was a set
 	# Modified to OrderedDict for Part 2 (including the addition of counter)
-	current_x = 0
-	current_y = 0
-	coords = OrderedDict()
+	current_pos = [0, 0]
+	direction_map = {
+		'R': (0, 1),
+		'L': (0, -1),
+		'U': (1, 1),
+		'D': (1, -1)
+	}
+	coords = {}
 	counter = 0
 	for heading in path:
 		direction = heading[0]
 		magnitude = int(heading[1:])
-		# Gah... Hate massive if-else, but easiest solution
-		if direction == 'R':
-			for new_x in range(current_x + 1, current_x + magnitude + 1):
-				counter += 1
-				coords[(new_x, current_y)] = counter
-			current_x = new_x
-		elif direction == 'L':
-			for new_x in range(current_x - 1, current_x - magnitude - 1, -1):
-				counter += 1
-				coords[(new_x, current_y)] = counter
-			current_x = new_x
-		elif direction == 'U':
-			for new_y in range(current_y + 1, current_y + magnitude + 1):
-				counter += 1
-				coords[(current_x, new_y)] = counter
-			current_y = new_y
-		elif direction == 'D':
-			for new_y in range(current_y - 1, current_y - magnitude - 1, -1):
-				counter += 1
-				coords[(current_x, new_y)] = counter
-			current_y = new_y
+		idx, step = direction_map[direction]
+		for _ in range(magnitude):
+			current_pos[idx] += step
+			counter += 1
+			coords[tuple(current_pos)] = counter
 	return coords
 
 # Part 1
