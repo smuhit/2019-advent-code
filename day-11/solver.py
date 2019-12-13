@@ -129,18 +129,12 @@ min_x = min(panels_painted, key=lambda x: x[0])[0]
 min_y = min(panels_painted, key=lambda x: x[1])[1]
 max_x = max(panels_painted, key=lambda x: x[0])[0]
 max_y = max(panels_painted, key=lambda x: x[1])[1]
-panels = []
-
-for y in range(max_y, min_y - 1, -1):
-    panels.append([])
-    for x in range(min_x, max_x + 1):
-        panels[-1].append(panels_painted.get((x, y), 0))
 
 character_to_print = {
     0: ' ',
     1: '█'
 }
-for height in range(len(panels)):
-    for width in range(len(panels[0])):
-        print(character_to_print[panels[height][width]], end='')
+for y in range(max_y, min_y - 1, -1):
+    for x in range(min_x, max_x + 1):
+        print(character_to_print[panels_painted.get((x, y), 0)], end='')
     print()
