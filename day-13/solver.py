@@ -89,16 +89,17 @@ def show_display_and_get_input():
     code_to_character = {
         0: ' ',
         1: '█',
-        2: '□',
-        3: '—',
-        4: '●'
+        2: '\033[92m□\033[0m',
+        3: '\033[90m▔\033[0m',
+        4: '\033[94m●\033[0m'
     }
     for x in range(0, len(intcode_output), 3):
         if intcode_output[x + 2] in code_to_character:
             display[intcode_output[x + 1]][intcode_output[x]] = code_to_character[intcode_output[x + 2]]
         else:
-            display[intcode_output[x + 1]][intcode_output[x]] = f'SCORE: {intcode_output[x + 2]}'
+            display[intcode_output[x + 1]][intcode_output[x]] = f'\033[1mSCORE: {intcode_output[x + 2]}\033[0m'
     sys.stdout = old_stdout
+    print("\033c", end="")
     if 0 in display.keys() and -1 in display[0]:
         print(display[0][-1])
     for y in range(min(display.keys()), max(display.keys()) + 1):
