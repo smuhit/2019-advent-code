@@ -74,12 +74,26 @@ num_block_tiles = len(list(filter(lambda x: x == 2, [intcode_output[x] for x in 
 sys.stdout = old_stdout
 
 print('Number of block tiles is', num_block_tiles)
+input('Press enter to continue.')
 
 # Part 2 --- Play a game of breakout to find the answer
+
+import termios
+import tty
 
 def reset_stream(stream):
     stream.truncate(0)
     stream.seek(0)
+
+def get_keypress():
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(sys.stdin.fileno())
+        character = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return character
 
 reset_stream(new_stdout)
 display = defaultdict(lambda: defaultdict(lambda: ' '))
@@ -116,9 +130,10 @@ def show_display_and_get_input():
         's': 0,
         'd': 1
     }
-    entered_char = input('Which way should the joystick move? ').lower()
+    print("Enter 'a' to move left, 's' to stand still, and 'd' to move right")
+    entered_char = get_keypress().lower()
     while entered_char not in char_map:
-        entered_char = input('Please enter a, s, or d. Which way should the joystick move? ').lower()
+        entered_char = get_keypress().lower()
     val = char_map[entered_char]
     sys.stdout = new_stdout
     return val
