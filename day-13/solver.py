@@ -144,3 +144,4 @@ new_data[0] = 2
 
 sys.stdout = new_stdout
 operate(new_data)
+show_display_and_get_input()
